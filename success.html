@@ -294,12 +294,13 @@
                             startDateCopy.setHours(0, 0, 0, 0);
                             dateCopy.setHours(0, 0, 0, 0);
                             
-                            // Calculate difference in days
-                            const timeDiff = dateCopy.getTime() - startDateCopy.getTime();
-                            const dayDiff = Math.round(timeDiff / (24 * 60 * 60 * 1000));
-                            
-                            // Navigate to reason page with date parameter
-                            window.location.href = `reason.html?date=${dateStr}&day=${dayDiff}`;
+                            // Calculate difference in days (using floor instead of round to ensure 
+// Feb 28 = day 0, Mar 1 = day 1, etc.)
+const timeDiff = dateCopy.getTime() - startDateCopy.getTime();
+const dayDiff = Math.floor(timeDiff / (24 * 60 * 60 * 1000));
+
+// Navigate to reason page with date parameter
+window.location.href = `reason.html?date=${dateStr}&day=${dayDiff}`;
                         });
                     }
                     
