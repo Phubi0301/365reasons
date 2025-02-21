@@ -459,9 +459,26 @@
             ];
             
             // Parse URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const dateStr = urlParams.get('date');
-            const dayNumber = parseInt(urlParams.get('day'));
+            // Parse URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const dateStr = urlParams.get('date');
+let dayNumber = parseInt(urlParams.get('day'));
+
+// Verify the day number calculation against the expected start date
+const startDate = new Date('2025-02-28');
+startDate.setHours(0, 0, 0, 0);
+const clickedDate = new Date(dateStr);
+clickedDate.setHours(0, 0, 0, 0);
+
+// Calculate the expected day number based on the date
+const timeDiff = clickedDate.getTime() - startDate.getTime();
+const expectedDayNumber = Math.round(timeDiff / (24 * 60 * 60 * 1000));
+
+// Use the calculated day number if it differs from the URL parameter
+if (expectedDayNumber !== dayNumber) {
+    console.log(`Correcting day number from ${dayNumber} to ${expectedDayNumber}`);
+    dayNumber = expectedDayNumber;
+}
             
             // Format the date nicely
             const date = new Date(dateStr);
