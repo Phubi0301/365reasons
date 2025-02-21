@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reason</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Background image will be set by JavaScript */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reason-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            width: 85%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .reason-text {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #000;
+            margin-bottom: 20px;
+        }
+        
+        .reason-date {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .day-number {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background" id="background">
+        <div class="reason-container">
+            <div class="reason-date" id="reasonDate">Loading...</div>
+            <div class="day-number" id="dayNumber">Day 0 of 365</div>
+            <div class="reason-text" id="reasonText">Loading your reason for today...</div>
+            <a href="success.html" class="back-button">Back to Calendar</a>
+        </div>
+    </div>
+
+    <script src="reasons.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Parse URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const dateStr = urlParams.get('date');
+            const dayNumber = parseInt(urlParams.get('day'));
+            
+            // Format the date nicely
+            const date = new Date(dateStr);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = date.toLocaleDateString('ru-RU', options);
+            
+            // Set the date text
+            document.getElementById('reasonDate').textContent = formattedDate;
+            document.getElementById('dayNumber').textContent = `День ${dayNumber + 1} из 365`;
+            
+            // Set the background image based on the month
+            const monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear() === 2025 ? '25' : '26';
+            const backgroundImage = `${month}${year}.jpg`;
+            
+            document.getElementById('background').style.backgroundImage = `url('${backgroundImage}')`;
+            
+            // Set the reason text based on the day number
+            if (dayNumber >= 0 && dayNumber < reasons.length) {
+                document.getElementById('reasonText').textContent = reasons[dayNumber];
+            } else {
+                document.getElementById('reasonText').textContent = "No reason found for this day.";
+            }
+        });
+    </script>
+</body>
+</html>
