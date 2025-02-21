@@ -81,7 +81,7 @@
             <div class="reason-date" id="reasonDate">Loading...</div>
             <div class="day-number" id="dayNumber">Day 1 of 365</div>
             <div class="reason-text" id="reasonText">Loading your reason for today...</div>
-            <a href="success.html" class="back-button">Обратно</a>
+           <a href="#" id="backButton" class="back-button">Обратно</a>
         </div>
     </div>
 
@@ -486,7 +486,27 @@
             } else {
                 document.getElementById('reasonText').textContent = "Reason not found for this day. Please make sure you've added all 365 reasons.";
             }
-        });
+       // Handle back button navigation
+document.getElementById('backButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Parse URL parameters to get the original date
+    const urlParams = new URLSearchParams(window.location.search);
+    const dateStr = urlParams.get('date');
+    
+    if (dateStr) {
+        // Extract month and year from the date
+        const date = new Date(dateStr);
+        const month = date.getMonth(); // 0-indexed (0 = January, 11 = December)
+        const year = date.getFullYear();
+        
+        // Redirect to calendar with month and year parameters
+        window.location.href = `index.html?month=${month}&year=${year}`;
+    } else {
+        // Fallback if no date parameter is found
+        window.location.href = 'index.html';
+    }
+});
     </script>
 </body>
 </html>
