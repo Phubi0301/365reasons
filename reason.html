@@ -81,7 +81,7 @@
             <div class="reason-date" id="reasonDate">Loading...</div>
             <div class="day-number" id="dayNumber">Day 1 of 365</div>
             <div class="reason-text" id="reasonText">Loading your reason for today...</div>
-            <a href="success.html" class="back-button">Обратно</a>
+           <a href="#" id="backButton" class="back-button">Обратно</a>
         </div>
     </div>
 
@@ -486,7 +486,33 @@
             } else {
                 document.getElementById('reasonText').textContent = "Reason not found for this day. Please make sure you've added all 365 reasons.";
             }
-        });
+            // Current location:
+document.addEventListener('DOMContentLoaded', function() {
+    // existing code...
+    
+    // Set the reason text based on the day number
+    if (dayNumber >= 0 && dayNumber < reasons.length) {
+        document.getElementById('reasonText').textContent = reasons[dayNumber];
+    } else {
+        document.getElementById('reasonText').textContent = "Reason not found for this day. Please make sure you've added all 365 reasons.";
+    }
+    
+    // ADD THIS CODE BLOCK HERE ↓
+   // Handle back button click
+const backButton = document.getElementById('backButton');
+backButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Get date from URL parameters
+    const date = new Date(dateStr);
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    
+    // Navigate back to success.html with month and year parameters
+    window.location.href = `success.html?month=${month}&year=${year}`;
+});
+
+}); // Close the DOMContentLoade
     </script>
 </body>
 </html>
