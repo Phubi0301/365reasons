@@ -73,16 +73,43 @@
             text-decoration: none;
             margin-top: 15px;
         }
+        .day-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.nav-arrow {
+    cursor: pointer;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+.prev-day {
+    border-right: 12px solid #FF0000;
+    margin-right: 10px;
+}
+
+.next-day {
+    border-left: 12px solid #FF0000;
+    margin-left: 10px;
+}
     </style>
 </head>
 <body>
-    <div class="background" id="background">
-        <div class="reason-container">
-            <div class="reason-date" id="reasonDate">Loading...</div>
-            <div class="day-number" id="dayNumber">Day 0 of 365</div>
-            <div class="reason-text" id="reasonText">Loading your reason for today...</div>
-            <a href="success.html" class="back-button">Back to Calendar</a>
-        </div>
+    <div class="reason-container">
+    <div class="day-navigation">
+        <div class="nav-arrow prev-day" id="prevDay"></div>
+        <div class="reason-date" id="reasonDate">Loading...</div>
+        <div class="nav-arrow next-day" id="nextDay"></div>
+    </div>
+    <div class="reason-text" id="reasonText">Loading your reason for today...</div>
+    <a href="success.html" class="back-button">Обратно</a>
+</div>
     </div>
 
     <script>
@@ -504,6 +531,29 @@ if (expectedDayNumber !== dayNumber) {
             } else {
                 document.getElementById('reasonText').textContent = "Reason not found for this day. Please make sure you've added all 365 reasons.";
             }
+            // Add navigation functionality for prev/next day
+document.getElementById('prevDay').addEventListener('click', function() {
+    // Calculate previous day's date
+    const prevDate = new Date(date);
+    prevDate.setDate(prevDate.getDate() - 1);
+    
+    // Format as YYYY-MM-DD
+    const prevDateStr = `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, '0')}-${String(prevDate.getDate()).padStart(2, '0')}`;
+    
+    // Navigate to previous day
+    window.location.href = `reason.html?date=${prevDateStr}&day=${dayNumber - 1}`;
+});
+
+document.getElementById('nextDay').addEventListener('click', function() {
+    // Calculate next day's date
+    const nextDate = new Date(date);
+    nextDate.setDate(nextDate.getDate() + 1);
+    
+    // Format as YYYY-MM-DD
+    const nextDateStr = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}-${String(nextDate.getDate()).padStart(2, '0')}`;
+    
+    // Navigate to next day
+    window.location.href = `reason.html?date=${nextDateStr}&day=${dayNumber + 1}`;
         });
     </script>
 </body>
