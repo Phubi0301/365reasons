@@ -278,8 +278,8 @@
                     // Set date object for this day
                     const date = new Date(year, month, i);
                     
-                    // Check if this date is before the current date and after the start date
-                    const isEnabled = date <= today && date >= startDate && date <= endDate;
+                    // Make all dates between start and end date enabled by default
+                    const isEnabled = date >= startDate && date <= endDate;
                     
                     // Check if this is the current day
                     const isCurrentDay = date.getDate() === today.getDate() && 
@@ -423,9 +423,8 @@
                     // Set date object for this day
                     const date = new Date(year, month, i);
                     
-                    // Check if this date is before the current date and after the start date
-                    // In admin mode, we enable all dates between start and end
-                    const isEnabled = (isAdminMode || date <= today) && date >= startDate && date <= endDate;
+                    // Make all dates between start and end date enabled regardless of admin mode or current date
+                    const isEnabled = date >= startDate && date <= endDate;
                     
                     // Check if this is the current day
                     const isCurrentDay = date.getDate() === today.getDate() && 
