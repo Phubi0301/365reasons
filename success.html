@@ -216,15 +216,14 @@
             // Current date for determining which dates to enable
             const today = new Date();
             
-            // Set initial display date to March 2025
-            let currentMonth = 2; // March (0-indexed)
-            let currentYear = 2025;
-            
-            // Ensure we stay within bounds
-            if (today < startDate) {
-                currentMonth = 2; // March
-                currentYear = 2025;
-            }
+            // Check URL parameters for month and year
+const urlParams = new URLSearchParams(window.location.search);
+const paramMonth = urlParams.get('month');
+const paramYear = urlParams.get('year');
+
+// Set initial display date - use parameters if available, otherwise default to March 2025
+let currentMonth = paramMonth !== null ? parseInt(paramMonth) : 2; // Default to March (0-indexed)
+let currentYear = paramYear !== null ? parseInt(paramYear) : 2025;
             
             // Russian month names
             const monthNames = [
