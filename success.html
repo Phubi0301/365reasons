@@ -157,18 +157,13 @@
             font-size: 14px;
         }
         
-        .day:hover:not(.disabled) {
+        .day:hover {
             background-color: #f0f0f0;
         }
         
         .day.current {
             background-color: #007AFF;
             color: white;
-        }
-        
-        .day.disabled {
-            color: #ccc;
-            cursor: default;
         }
         
         .empty {
@@ -213,18 +208,12 @@
             const startDate = new Date('2025-02-28');
             const endDate = new Date('2026-02-28');
             
-            // Current date for determining which dates to enable
+            // Current date for determining current day highlighting
             const today = new Date();
             
-            // Set initial display date
-            let currentMonth = today.getMonth();
-            let currentYear = today.getFullYear();
-            
-            // Ensure we start from Feb 2025 if before that date
-            if (today < startDate) {
-                currentMonth = 1; // February
-                currentYear = 2025;
-            }
+            // Set initial display date to February 2025
+            let currentMonth = 1; // February (0-based index)
+            let currentYear = 2025;
             
             // Russian month names
             const monthNames = [
@@ -278,10 +267,8 @@
                     // Set date object for this day
                     const date = new Date(year, month, i);
                     
-                    // Check if this date is before the current date and after the start date
-                    // Special exception for February 28, 2025
-                    const isFeb28 = date.getFullYear() === 2025 && date.getMonth() === 1 && date.getDate() === 28;
-                    const isEnabled = ((date <= today) || isFeb28) && date >= startDate && date <= endDate;
+                    // Only enable dates between start and end date
+                    const isInRange = date >= startDate && date <= endDate;
                     
                     // Check if this is the current day
                     const isCurrentDay = date.getDate() === today.getDate() && 
@@ -292,17 +279,24 @@
                         day.classList.add('current');
                     }
                     
-                    if (!isEnabled) {
-                        day.classList.add('disabled');
-                    } else {
+                    if (isInRange) {
                         // Add click event for enabled days
                         day.addEventListener('click', function() {
                             // Format the date as YYYY-MM-DD
                             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
                             
                             // Calculate day number (days since start date)
-                            // For February 28, 2025, this should be day 0
-                            const dayDiff = Math.floor((date - startDate) / (24 * 60 * 60 * 1000));
+                            // This is the critical part to ensure February 28 gets day=0
+                            const startDateCopy = new Date(startDate.getTime());
+                            const dateCopy = new Date(date.getTime());
+                            
+                            // Normalize times to midnight to avoid time zone issues
+                            startDateCopy.setHours(0, 0, 0, 0);
+                            dateCopy.setHours(0, 0, 0, 0);
+                            
+                            // Calculate difference in days
+                            const timeDiff = dateCopy.getTime() - startDateCopy.getTime();
+                            const dayDiff = Math.round(timeDiff / (24 * 60 * 60 * 1000));
                             
                             // Navigate to reason page with date parameter
                             window.location.href = `reason.html?date=${dateStr}&day=${dayDiff}`;
@@ -348,8 +342,7 @@
                 }
             });
             
-            // Admin functionality
-            let isAdminMode = false;
+            // Admin functionality (kept for compatibility)
             const adminIcon = document.getElementById('adminIcon');
             const adminModal = document.getElementById('adminModal');
             const adminSubmit = document.getElementById('adminSubmit');
@@ -369,10 +362,7 @@
             adminSubmit.addEventListener('click', function() {
                 const password = adminPassword.value;
                 if (password === 'Bishkek2025!') {
-                    isAdminMode = true;
                     adminModal.style.display = 'none';
-                    // Regenerate calendar with admin privileges
-                    generateCalendar(currentMonth, currentYear);
                     // Show admin indicator
                     adminIcon.style.opacity = '1';
                     adminIcon.style.color = '#007AFF';
@@ -380,85 +370,6 @@
                     adminError.style.display = 'block';
                 }
             });
-            
-            // Update the generateCalendar function to check for admin mode
-            const originalGenerateCalendar = generateCalendar;
-            generateCalendar = function(month, year) {
-                const calendarGrid = document.getElementById('calendarGrid');
-                const monthYear = document.getElementById('monthYear');
-                
-                // Clear previous calendar
-                calendarGrid.innerHTML = '';
-                
-                // Set month and year text
-                monthYear.textContent = `${monthNames[month]} ${year.toString().substring(2)}`;
-                
-                // Add day headers
-                dayNames.forEach(day => {
-                    const dayHeader = document.createElement('div');
-                    dayHeader.className = 'day-header';
-                    dayHeader.textContent = day;
-                    calendarGrid.appendChild(dayHeader);
-                });
-                
-                // Get first day of month (0-6, where 0 is Sunday)
-                const firstDay = new Date(year, month, 1).getDay();
-                // Adjust for Monday as first day (0-6, where 0 is Monday)
-                const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
-                
-                // Get number of days in month
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-                
-                // Create empty cells for days before first day of month
-                for (let i = 0; i < adjustedFirstDay; i++) {
-                    const emptyDay = document.createElement('div');
-                    emptyDay.className = 'day empty';
-                    calendarGrid.appendChild(emptyDay);
-                }
-                
-                // Create cells for each day in month
-                for (let i = 1; i <= daysInMonth; i++) {
-                    const day = document.createElement('div');
-                    day.className = 'day';
-                    day.textContent = i;
-                    
-                    // Set date object for this day
-                    const date = new Date(year, month, i);
-                    
-                    // Check if this date is before the current date and after the start date
-                    // In admin mode, we enable all dates between start and end
-                    // Special exception for February 28, 2025
-                    const isFeb28 = date.getFullYear() === 2025 && date.getMonth() === 1 && date.getDate() === 28;
-                    const isEnabled = (isAdminMode || date <= today || isFeb28) && date >= startDate && date <= endDate;
-                    
-                    // Check if this is the current day
-                    const isCurrentDay = date.getDate() === today.getDate() && 
-                                        date.getMonth() === today.getMonth() && 
-                                        date.getFullYear() === today.getFullYear();
-                    
-                    if (isCurrentDay) {
-                        day.classList.add('current');
-                    }
-                    
-                    if (!isEnabled) {
-                        day.classList.add('disabled');
-                    } else {
-                        // Add click event for enabled days
-                        day.addEventListener('click', function() {
-                            // Format the date as YYYY-MM-DD
-                            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-                            
-                            // Calculate day number (days since start date)
-                            const dayDiff = Math.floor((date - startDate) / (24 * 60 * 60 * 1000));
-                            
-                            // Navigate to reason page with date parameter
-                            window.location.href = `reason.html?date=${dateStr}&day=${dayDiff}`;
-                        });
-                    }
-                    
-                    calendarGrid.appendChild(day);
-                }
-            }
         });
     </script>
 </body>
