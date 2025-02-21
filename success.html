@@ -45,6 +45,65 @@
             padding: 15px;
             background-color: #f8f8f8;
             border-bottom: 1px solid #eaeaea;
+            position: relative;
+        }
+        
+        .admin-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+        
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .admin-modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 300px;
+        }
+        
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .admin-form input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .admin-form button {
+            padding: 10px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .admin-form .error {
+            color: red;
+            margin-bottom: 15px;
+            display: none;
         }
         
         .month-nav {
@@ -123,9 +182,25 @@
                 <div class="month-nav prev-month" id="prevMonth"></div>
                 <div class="month-year" id="monthYear">Февраль 25</div>
                 <div class="month-nav next-month" id="nextMonth"></div>
+                <svg class="admin-icon" id="adminIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
             </div>
             <div class="calendar-grid" id="calendarGrid">
                 <!-- Calendar will be rendered here by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-modal-content">
+            <div class="admin-form">
+                <h3>Admin Access</h3>
+                <p>Enter admin password:</p>
+                <input type="password" id="adminPassword" placeholder="Password">
+                <div class="error" id="adminError">Incorrect password</div>
+                <button id="adminSubmit">Login</button>
             </div>
         </div>
     </div>
@@ -265,6 +340,114 @@
                     generateCalendar(currentMonth, currentYear);
                 }
             });
+            
+            // Admin functionality
+            let isAdminMode = false;
+            const adminIcon = document.getElementById('adminIcon');
+            const adminModal = document.getElementById('adminModal');
+            const adminSubmit = document.getElementById('adminSubmit');
+            const adminPassword = document.getElementById('adminPassword');
+            const adminError = document.getElementById('adminError');
+            
+            adminIcon.addEventListener('click', function() {
+                adminModal.style.display = 'flex';
+            });
+            
+            adminModal.addEventListener('click', function(event) {
+                if (event.target === adminModal) {
+                    adminModal.style.display = 'none';
+                }
+            });
+            
+            adminSubmit.addEventListener('click', function() {
+                const password = adminPassword.value;
+                if (password === 'Bishkek2025!') {
+                    isAdminMode = true;
+                    adminModal.style.display = 'none';
+                    // Regenerate calendar with admin privileges
+                    generateCalendar(currentMonth, currentYear);
+                    // Show admin indicator
+                    adminIcon.style.opacity = '1';
+                    adminIcon.style.color = '#007AFF';
+                } else {
+                    adminError.style.display = 'block';
+                }
+            });
+            
+            // Update the generateCalendar function to check for admin mode
+            const originalGenerateCalendar = generateCalendar;
+            generateCalendar = function(month, year) {
+                const calendarGrid = document.getElementById('calendarGrid');
+                const monthYear = document.getElementById('monthYear');
+                
+                // Clear previous calendar
+                calendarGrid.innerHTML = '';
+                
+                // Set month and year text
+                monthYear.textContent = `${monthNames[month]} ${year.toString().substring(2)}`;
+                
+                // Add day headers
+                dayNames.forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'day-header';
+                    dayHeader.textContent = day;
+                    calendarGrid.appendChild(dayHeader);
+                });
+                
+                // Get first day of month (0-6, where 0 is Sunday)
+                const firstDay = new Date(year, month, 1).getDay();
+                // Adjust for Monday as first day (0-6, where 0 is Monday)
+                const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
+                
+                // Get number of days in month
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                
+                // Create empty cells for days before first day of month
+                for (let i = 0; i < adjustedFirstDay; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'day empty';
+                    calendarGrid.appendChild(emptyDay);
+                }
+                
+                // Create cells for each day in month
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const day = document.createElement('div');
+                    day.className = 'day';
+                    day.textContent = i;
+                    
+                    // Set date object for this day
+                    const date = new Date(year, month, i);
+                    
+                    // Check if this date is before the current date and after the start date
+                    // In admin mode, we enable all dates between start and end
+                    const isEnabled = (isAdminMode || date <= today) && date >= startDate && date <= endDate;
+                    
+                    // Check if this is the current day
+                    const isCurrentDay = date.getDate() === today.getDate() && 
+                                        date.getMonth() === today.getMonth() && 
+                                        date.getFullYear() === today.getFullYear();
+                    
+                    if (isCurrentDay) {
+                        day.classList.add('current');
+                    }
+                    
+                    if (!isEnabled) {
+                        day.classList.add('disabled');
+                    } else {
+                        // Add click event for enabled days
+                        day.addEventListener('click', function() {
+                            // Format the date as YYYY-MM-DD
+                            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                            // Calculate day number (days since start date)
+                            const dayNumber = Math.floor((date - startDate) / (24 * 60 * 60 * 1000));
+                            // Navigate to reason page with date parameter
+                            window.location.href = `reason.html?date=${dateStr}&day=${dayNumber}`;
+                        });
+                    }
+                    
+                    calendarGrid.appendChild(day);
+                }
+            }
         });
     </script>
 </body>
