@@ -101,15 +101,17 @@
     </style>
 </head>
 <body>
-    <div class="reason-container">
-    <div class="day-navigation">
-        <div class="nav-arrow prev-day" id="prevDay"></div>
-        <div class="reason-date" id="reasonDate">Loading...</div>
-        <div class="nav-arrow next-day" id="nextDay"></div>
-    </div>
-    <div class="reason-text" id="reasonText">Loading your reason for today...</div>
-    <a href="success.html" class="back-button">Обратно</a>
-</div>
+ <body>
+    <div class="background" id="background">
+        <div class="reason-container">
+            <div class="day-navigation">
+                <div class="nav-arrow prev-day" id="prevDay"></div>
+                <div class="reason-date" id="reasonDate">Loading...</div>
+                <div class="nav-arrow next-day" id="nextDay"></div>
+            </div>
+            <div class="reason-text" id="reasonText">Loading your reason for today...</div>
+            <a href="success.html" class="back-button">Обратно</a>
+        </div>
     </div>
 
     <script>
@@ -515,7 +517,6 @@ if (expectedDayNumber !== dayNumber) {
             
             // Set the date text
             document.getElementById('reasonDate').textContent = formattedDate;
-            document.getElementById('dayNumber').textContent = `День ${dayNumber + 1} из 365`;
             
             // Set the background image based on the month
             const monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
