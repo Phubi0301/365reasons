@@ -490,30 +490,11 @@ backgroundElement.style.backgroundImage = `url('${backgroundImage}')`;
             }
         });
 
-    // Add back button handler
+ // Add back button handler
 const backButton = document.getElementById('backButton');
 backButton.addEventListener('click', function(e) {
     e.preventDefault();
-    
-    // Get the date from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const dateStr = urlParams.get('date');
-    
-    // Get the base URL - this accounts for GitHub Pages repository structure
-    const baseUrl = window.location.pathname.split('/reason.html')[0];
-    
-    if (dateStr) {
-        // Extract month and year from the date
-        const date = new Date(dateStr);
-        const month = date.getMonth(); // 0-indexed
-        const year = date.getFullYear();
-        
-        // Navigate back to success.html with month and year parameters, using the correct base path
-        window.location.href = `${baseUrl}/success.html?month=${month}&year=${year}`;
-    } else {
-        // Fallback to success.html without parameters, using the correct base path
-        window.location.href = `${baseUrl}/success.html`;
-    }
+    window.location.href = 'success.html';
 });
     </script>
 </body>
