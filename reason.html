@@ -490,7 +490,7 @@ backgroundElement.style.backgroundImage = `url('${backgroundImage}')`;
             }
         });
 
-    // Add back button handler
+ // Add back button handler
 const backButton = document.getElementById('backButton');
 backButton.addEventListener('click', function(e) {
     e.preventDefault();
@@ -505,11 +505,14 @@ backButton.addEventListener('click', function(e) {
         const month = date.getMonth(); // 0-indexed
         const year = date.getFullYear();
         
-        // Navigate back to success.html with month and year parameters
-        window.location.href = `success.html?month=${month}&year=${year}`;
+        // Get the base URL
+        const baseUrl = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+        
+        // Navigate back to success.html with month and year parameters using absolute path
+        window.location.href = `${baseUrl}success.html?month=${month}&year=${year}`;
     } else {
         // Fallback to success.html without parameters
-        window.location.href = 'success.html';
+        window.location.href = `${baseUrl}success.html`;
     }
 });
     </script>
