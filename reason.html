@@ -473,12 +473,12 @@
             document.getElementById('dayNumber').textContent = `День ${dayNumber + 1} из 365`;
             
             // Set the background image based on the month
-            const monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-            const month = monthNames[date.getMonth()];
-            const year = date.getFullYear() === 2025 ? '25' : '26';
-            const backgroundImage = `${month}${year}.jpg`;
-            
-            document.getElementById('background').style.backgroundImage = `url('${backgroundImage}')`;
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const month = monthNames[date.getMonth()];
+const year = date.getFullYear() === 2025 ? '25' : '26';
+const backgroundImage = `images/${month}${year}.jpg`; // Update the path if images are in a folder
+
+document.getElementById('background').style.backgroundImage = `url('${backgroundImage}')`;
             
             // Set the reason text based on the day number
             if (dayNumber >= 0 && dayNumber < reasons.length) {
