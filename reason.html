@@ -19,18 +19,19 @@
         }
         
         .background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Background image will be set by JavaScript */
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: -1;
+}
         
         .reason-container {
             background-color: rgba(255, 255, 255, 0.85);
@@ -477,9 +478,9 @@
             const month = monthNames[date.getMonth()];
             const year = date.getFullYear() === 2025 ? '25' : '26';
             const backgroundImage = `${month}${year}.jpg`;
-            
-            document.getElementById('background').style.backgroundImage = `url('${backgroundImage}')`;
-            
+            console.log('Setting background image:', backgroundImage);
+document.getElementById('background').style.backgroundImage = `url('${backgroundImage}')`;
+
             // Set the reason text based on the day number
             if (dayNumber >= 0 && dayNumber < reasons.length) {
                 document.getElementById('reasonText').textContent = reasons[dayNumber];
