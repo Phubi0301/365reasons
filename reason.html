@@ -495,24 +495,33 @@ const backButton = document.getElementById('backButton');
 backButton.addEventListener('click', function(e) {
     e.preventDefault();
     
-    // Get the date from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const dateStr = urlParams.get('date');
-    
-    if (dateStr) {
-        // Extract month and year from the date
-        const date = new Date(dateStr);
-        const month = date.getMonth(); // 0-indexed
-        const year = date.getFullYear();
+    try {
+        // Get the date from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const dateStr = urlParams.get('date');
         
-        // Get the base URL
-        const baseUrl = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+        console.log('Date from URL:', dateStr); // Debug logging
         
-        // Navigate back to success.html with month and year parameters using absolute path
-        window.location.href = `${baseUrl}success.html?month=${month}&year=${year}`;
-    } else {
-        // Fallback to success.html without parameters
-        window.location.href = `${baseUrl}success.html`;
+        if (dateStr) {
+            // Extract month and year from the date
+            const date = new Date(dateStr);
+            const month = date.getMonth(); // 0-indexed
+            const year = date.getFullYear();
+            
+            console.log('Extracted month and year:', month, year); // Debug logging
+            
+            // Navigate back to success.html with month and year parameters
+            const newUrl = `/success.html?month=${month}&year=${year}`;
+            console.log('Redirecting to:', newUrl); // Debug logging
+            window.location.href = newUrl;
+        } else {
+            console.log('No date parameter found, using fallback'); // Debug logging
+            window.location.href = '/success.html';
+        }
+    } catch (error) {
+        console.error('Error in back button handler:', error);
+        // Fallback to simple navigation if anything goes wrong
+        window.location.href = '/success.html';
     }
 });
     </script>
