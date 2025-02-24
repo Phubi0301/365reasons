@@ -490,7 +490,7 @@ backgroundElement.style.backgroundImage = `url('${backgroundImage}')`;
             }
         });
 
- // Add back button handler
+// Add back button handler
 const backButton = document.getElementById('backButton');
 backButton.addEventListener('click', function(e) {
     e.preventDefault();
@@ -500,7 +500,7 @@ backButton.addEventListener('click', function(e) {
         const urlParams = new URLSearchParams(window.location.search);
         const dateStr = urlParams.get('date');
         
-        console.log('Date from URL:', dateStr); // Debug logging
+        console.log('Current date parameter:', dateStr); // Debug logging
         
         if (dateStr) {
             // Extract month and year from the date
@@ -510,18 +510,18 @@ backButton.addEventListener('click', function(e) {
             
             console.log('Extracted month and year:', month, year); // Debug logging
             
-            // Navigate back to success.html with month and year parameters
-            const newUrl = `/success.html?month=${month}&year=${year}`;
+            // Use the repository-specific path for GitHub Pages
+            const newUrl = `/365reasons/success.html?month=${month}&year=${year}`;
             console.log('Redirecting to:', newUrl); // Debug logging
             window.location.href = newUrl;
         } else {
             console.log('No date parameter found, using fallback'); // Debug logging
-            window.location.href = '/success.html';
+            window.location.href = '/365reasons/success.html';
         }
     } catch (error) {
         console.error('Error in back button handler:', error);
         // Fallback to simple navigation if anything goes wrong
-        window.location.href = '/success.html';
+        window.location.href = '/365reasons/success.html';
     }
 });
     </script>
