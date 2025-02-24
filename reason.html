@@ -18,7 +18,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
         
-        .background {
+.background {
     position: fixed;
     top: 0;
     left: 0;
@@ -30,18 +30,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: -1;
 }
-        
-        .reason-container {
-            background-color: rgba(255, 255, 255, 0.85);
-            padding: 20px;
-            border-radius: 10px;
-            width: 85%;
-            max-width: 320px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+
+.reason-container {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 10px;
+    width: 85%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
         
         .reason-text {
             font-size: 18px;
@@ -82,7 +83,7 @@
             <div class="reason-date" id="reasonDate">Loading...</div>
             <div class="day-number" id="dayNumber">Day 1 of 365</div>
             <div class="reason-text" id="reasonText">Loading your reason for today...</div>
-            <a href="#" id="backButton" class="back-button">Обратно</a>
+      <a href="#" id="backButton" class="back-button">&#1054;&#1073;&#1088;&#1072;&#1090;&#1085;&#1086;</a>
         </div>
     </div>
 
@@ -479,7 +480,8 @@
             const year = date.getFullYear() === 2025 ? '25' : '26';
             const backgroundImage = `${month}${year}.jpg`;
             console.log('Setting background image:', backgroundImage);
-document.getElementById('background').style.backgroundImage = `url('${backgroundImage}')`;
+const backgroundElement = document.getElementById('background');
+backgroundElement.style.backgroundImage = `url('${backgroundImage}')`;
 
             // Set the reason text based on the day number
             if (dayNumber >= 0 && dayNumber < reasons.length) {
@@ -489,7 +491,7 @@ document.getElementById('background').style.backgroundImage = `url('${background
             }
         });
 
-    // Add back button handler
+// Add back button handler
 const backButton = document.getElementById('backButton');
 backButton.addEventListener('click', function(e) {
     e.preventDefault();
@@ -505,10 +507,10 @@ backButton.addEventListener('click', function(e) {
         const year = date.getFullYear();
         
         // Navigate back to success.html with month and year parameters
-        window.location.href = `success.html?month=${month}&year=${year}`;
+        window.location.href = `success-4.html?month=${month}&year=${year}`;
     } else {
         // Fallback to success.html without parameters
-        window.location.href = 'success.html';
+        window.location.href = 'success-4.html';
     }
 });
     </script>
