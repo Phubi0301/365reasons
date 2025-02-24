@@ -476,7 +476,7 @@
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const month = monthNames[date.getMonth()];
 const year = date.getFullYear() === 2025 ? '25' : '26';
-const backgroundImage = `images/${month}${year}.jpg`; // Update the path if images are in a folder
+const backgroundImage = `${month}${year}.jpg`; // Update the path if images are in a folder
 
 document.getElementById('background').style.backgroundImage = `url('${backgroundImage}')`;
             
