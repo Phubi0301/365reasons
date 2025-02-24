@@ -510,18 +510,16 @@ backButton.addEventListener('click', function(e) {
             
             console.log('Extracted month and year:', month, year); // Debug logging
             
-            // Use the repository-specific path for GitHub Pages
-            const newUrl = `/365reasons/success.html?month=${month}&year=${year}`;
-            console.log('Redirecting to:', newUrl); // Debug logging
-            window.location.href = newUrl;
+            // Use relative path instead of absolute path
+            window.location.href = `success.html?month=${month}&year=${year}`;
         } else {
             console.log('No date parameter found, using fallback'); // Debug logging
-            window.location.href = '/365reasons/success.html';
+            window.location.href = 'success.html';
         }
     } catch (error) {
         console.error('Error in back button handler:', error);
         // Fallback to simple navigation if anything goes wrong
-        window.location.href = '/365reasons/success.html';
+        window.location.href = 'success.html';
     }
 });
     </script>
